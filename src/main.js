@@ -6,10 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(json => {
             const prayerTimesDiv = document.getElementById("prayerTimes");
 
-            const cityHeading = document.createElement("h2");
-            cityHeading.textContent = `City: ${json.city}`;
-            prayerTimesDiv.appendChild(cityHeading);
-
             const dateHeading = document.createElement("h3");
             dateHeading.textContent = `Date: ${json.date}`;
             prayerTimesDiv.appendChild(dateHeading);
