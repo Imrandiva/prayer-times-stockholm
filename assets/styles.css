@@ -1,0 +1,37 @@
+
+h1 {
+  color: #FFFFFF;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+p {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+
+}
+.container {
+  display: block;
+
+}
+
+#fajr, #sunrise, #dhuhr, #asr, #maghrib, #isha {
+  width: 90%;
+  background-color: #212124;
+  color: #FFFFFF;
+  font-size: 1.5rem;
+  padding: 0rem;
+  margin: 20px;
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow:
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  0px 12px 17px 2px hsla(0,0%,0%,0.14), 
+  0px 5px 22px 4px hsla(0,0%,0%,0.12), 
+  0px 7px 8px -4px hsla(0,0%,0%,0.2);
+
+}
+
+img {
+  width: 10%;
+}
