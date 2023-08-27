@@ -20,7 +20,7 @@ h5 {
 
 }
 
-#fajr, #sunrise, #dhuhr, #asr, #maghrib, #isha {
+#fajr, #sunrise, #dhuhr, #asr, #maghrib, #isha, #fajr_tmr {
   width: 90%;
   background-color: #212124;
   color: #FFFFFF;

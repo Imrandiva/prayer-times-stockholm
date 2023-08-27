@@ -19,9 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
             dateHeading.style.color = "#FFFFFF"
             dateHeading.style.textAlign = "center"
             todaysDate.appendChild(dateHeading);
-            const prayerList = document.createElement("ul");
-            const nameList = document.createElement("ul");
-
     
 
 
@@ -31,35 +28,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 // prayerList.appendChild(prayerItem);
                 dict[prayer] = json.today[prayer]
             }
-            prayerNameList = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha'a"]
-            pray_id = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"]
+            dict["fajr_tmr"] = json.tomorrow["Fajr"]
+            prayerNameList = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha'a", "fajr_tmr"]
+            pray_id = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha", "fajr_tmr"]
 
             var i = 0;
             active = false
             for (prayer of prayerNameList) {
             
-            prayer_time = dict[prayer]
-                                            // Replace this with the time string you have
-            const timeString = prayer_time // Example time string in HH:MM:SS format
+                prayer_time = dict[prayer]
+                                                // Replace this with the time string you have
+                const timeString = prayer_time // Example time string in HH:MM:SS format
 
-            const today = new Date();
+                const today = new Date();
 
-            
-            const year = today.getFullYear();
-            const month = (today.getMonth() + 1).toString().padStart(2, '0');
-            const day = today.getDate().toString().padStart(2, '0');
+                
+                const year = today.getFullYear();
+                const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                const day = today.getDate().toString().padStart(2, '0');
 
 
-            // Step 1: Parse the time string into a Date object
+                // Step 1: Parse the time string into a Date object
 
-            const parsedTime = new Date(`${year}-${month}-${day}T${timeString}`);
+                const parsedTime = new Date(`${year}-${month}-${day}T${timeString}`);
 
-            // Step 3: Compare the two Date objects
-            if (parsedTime < today) {
-                continue
-            }
+
+                // Step 3: Compare the two Date objects
+
+                if (i != 6 && parsedTime < today) {
+                    i+=1
+                    continue
+                }
+
+
+                 
 
                 var prayer_id = document.getElementById(pray_id[i]);
+
                 
                 
                 var mydiv = document.createElement("div");
@@ -101,9 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 const temp2 = document.createElement("p");
                 const time_until = document.createElement("h5");
 
-              
+            
                 
-                if (active == false) {
+                if (active == false && i < 6) {
 
                     let time_until_time = Math.round((parsedTime.getTime()  - today.getTime()) / 1000 / 60)
                     var hours = Math.floor(time_until_time / 60);          
@@ -144,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 i += 1
             }
+            
 
             
         })
