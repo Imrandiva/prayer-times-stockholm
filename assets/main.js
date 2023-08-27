@@ -65,11 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 var mydiv = document.createElement("div");
                 
                 if (active == false) {
-                    prayer_id.style.paddingTop =  "1rem"
-                    prayer_id.style.paddingBottom  =  "1rem"
-                    prayer_id.style.borderStyle  =  "Solid"
-                    prayer_id.style.borderColor  =  "#03DAC6"
-                    active = true
+                    // prayer_id.style.borderStyle  =  "Solid"
+                    prayer_id.style.backgroundColor  =  "#03DAC6"
+                    prayer_id.style.color  =  "#212124"
+                    prayer_id.style.fontWeight  =  "bold"
+
                 }
 
                 var img = document.createElement("img");
@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 mydiv = document.createElement("div");
                 
+
                 mydiv.style.width = "50%"
                 const temp = document.createElement("p");
                 temp.textContent = prayer
@@ -98,11 +99,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 const temp2 = document.createElement("p");
+                const time_until = document.createElement("h5");
+
+              
+                
+                if (active == false) {
+
+                    let time_until_time = Math.round((parsedTime.getTime()  - today.getTime()) / 1000 / 60)
+                    var hours = Math.floor(time_until_time / 60);          
+                    var minutes = time_until_time % 60;
+                    temp2.textContent = prayer_time 
+                    if (hours == 1) {
+                        time_until.textContent = hours + " timme och " + minutes  + " min tills bönen börjar."
+                    }
+                    else if (hours == 0){
+                        time_until.textContent = minutes  + " min tills bönen börjar."
+                    }
+                    else {
+                        time_until.textContent = hours + " timmar och " + minutes  + " min tills bönen börjar."
+                    }
+                    active = true
+                    
+
+                }
+                else {
+                    temp2.textContent = prayer_time
+                }
+                
+
                 mydiv = document.createElement("div");
                 // mydiv.style.display = "flex"
-                temp2.textContent = prayer_time
+                
                 temp2.style.fontSize = "2rem"
                 mydiv.appendChild(temp2)
+                mydiv.appendChild(time_until)
 
                 prayer_id.appendChild(mydiv);
 
