@@ -58,10 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Step 3: Compare the two Date objects
 
-                // if (i != 6 && parsedTime < today) {
-                //     i+=1
-                //     continue
-                // }
+                if (i != 6 && parsedTime < today) {
+                    i+=1
+                    continue
+                }
 
 
                  
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
                 img.src = "./assets/img/" +  image_source[i]
                 img.style.width = "100%"
-                mydiv.style.width = "10%"
+                mydiv.style.width = "20%"
                 mydiv.style.marginLeft = "1%"
                 mydiv.style.paddingTop = "2%"
                 mydiv.style.marginRight = "5%"
