@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     prayer = "Fajr imorgon"
                 }
                 temp.textContent = prayer
-                temp.style.fontSize = "2rem"
+                temp.style.fontSize = "1.5rem"
                 mydiv.appendChild(temp)
 
                 prayer_id.appendChild(mydiv);
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 mydiv = document.createElement("div");
                 // mydiv.style.display = "flex"
                 
-                temp2.style.fontSize = "2rem"
+                temp2.style.fontSize = "1.5rem"
                 mydiv.appendChild(temp2)
                 mydiv.appendChild(time_until)
 
