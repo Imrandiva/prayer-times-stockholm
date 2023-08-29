@@ -22,7 +22,7 @@ h5 {
 
 #fajr, #sunrise, #dhuhr, #asr, #maghrib, #isha, #fajr_tmr {
   width: 90%;
-  background-color: #212124;
+  background-color: #3D426B;
   color: #FFFFFF;
   font-size: 1.5rem;
   padding: 0rem;
@@ -34,4 +34,11 @@ h5 {
 
 img {
   width: 10%;
+
+}
+
+@media screen and (max-width: 992px) {
+  img {
+    margin-top: 0.7rem;
+  }
 }

@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
             dateHeading.style.color = "#FFFFFF"
             dateHeading.style.textAlign = "center"
             todaysDate.appendChild(dateHeading);
+            
     
 
 
@@ -31,6 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
             dict["fajr_tmr"] = json.tomorrow["Fajr"]
             prayerNameList = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha'a", "fajr_tmr"]
             pray_id = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha", "fajr_tmr"]
+            
+            let image_source = ["sunrise.png","sun.png","midday.png","midday.png", "sunset.png","prayer.png","sunrise.png"]
 
             var i = 0;
             active = false
@@ -55,10 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Step 3: Compare the two Date objects
 
-                if (i != 6 && parsedTime < today) {
-                    i+=1
-                    continue
-                }
+                // if (i != 6 && parsedTime < today) {
+                //     i+=1
+                //     continue
+                // }
 
 
                  
@@ -71,14 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 if (active == false) {
                     // prayer_id.style.borderStyle  =  "Solid"
-                    prayer_id.style.backgroundColor  =  "#03DAC6"
+                    prayer_id.style.backgroundColor  =  "#A7C7E7"
                     prayer_id.style.color  =  "#212124"
                     prayer_id.style.fontWeight  =  "bold"
 
                 }
 
                 var img = document.createElement("img");
-                img.src = "./assets/img/sunrise.svg"
+
+      
+                img.src = "./assets/img/" +  image_source[i]
                 img.style.width = "100%"
                 mydiv.style.width = "10%"
                 mydiv.style.marginLeft = "1%"
@@ -96,6 +101,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 mydiv.style.width = "50%"
                 const temp = document.createElement("p");
+                if (prayer == "fajr_tmr") {
+                    prayer = "Fajr imorgon"
+                }
                 temp.textContent = prayer
                 temp.style.fontSize = "2rem"
                 mydiv.appendChild(temp)
@@ -115,13 +123,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     var minutes = time_until_time % 60;
                     temp2.textContent = prayer_time 
                     if (hours == 1) {
-                        time_until.textContent = hours + " timme och " + minutes  + " min tills bönen börjar."
+                        time_until.textContent = "Börjar om " + hours + " timme och " + minutes + " min" 
                     }
                     else if (hours == 0){
-                        time_until.textContent = minutes  + " min tills bönen börjar."
+                        time_until.textContent = "Börjar om " + minutes + " min"
                     }
                     else {
-                        time_until.textContent = hours + " timmar och " + minutes  + " min tills bönen börjar."
+                        time_until.textContent = "Börjar om " + hours + " timmar och " + minutes + " min"
                     }
                     active = true
                     
