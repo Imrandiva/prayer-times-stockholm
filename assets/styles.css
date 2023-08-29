@@ -32,10 +32,6 @@ h5 {
   box-shadow:5px 10px 8px #212124
 }
 
-img {
-  width: 10%;
-
-}
 
 @media screen and (max-width: 992px) {
   img {
