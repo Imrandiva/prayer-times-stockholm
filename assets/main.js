@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 mydiv.style.width = "50%"
                 const temp = document.createElement("p");
                 if (prayer == "fajr_tmr") {
-                    prayer = "Fajr imorgon"
+                    prayer = "Fajr"
                 }
                 temp.textContent = prayer
                 temp.style.fontSize = "1.5rem"
