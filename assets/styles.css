@@ -32,3 +32,18 @@ h5 {
   box-shadow:5px 10px 8px #212124
 }
 
+.loader {
+  border: 9px solid #f3f3f3;
+  border-top: 9px solid #007bff; /* Loading spinner color */
+  border-radius: 50%;
+  width: 10rem;
+  height: 10rem;
+  animation: spin 2s linear infinite;
+  margin: 20px auto;
+  margin-top: 10%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
