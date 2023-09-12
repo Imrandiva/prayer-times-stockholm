@@ -1,4 +1,4 @@
-# Website Name
+# Prayer times in Stockholm
 
 [![Website Status](https://img.shields.io/website-up-down-green-red/https/example.com.svg)](http://imrandiva.github.io/prayer-times-stockholm/)
 
