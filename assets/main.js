@@ -1,6 +1,6 @@
 
 
-// Fetch data from API, and use loading animation while data is being fetched
+// Fetch data from API, and use loading animation while data is being fetched.
 document.addEventListener("DOMContentLoaded", () => {
     const url = "https://dailyprayer.abdulrcs.repl.co/api/stockholm";
     const loadingSpinner = document.getElementById("loadingSpinner");
