@@ -76,7 +76,7 @@ function displayPrayerTimes(json) {
         if (!active) {
             prayer_id.style.backgroundColor = "#A7C7E7";
             prayer_id.style.color = "#212124";
-            prayer_id.style.fontWeight = "lighter";
+            prayer_id.style.fontWeight = "bold";
         }
 
         const img = document.createElement("img");
