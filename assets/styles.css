@@ -7,13 +7,12 @@ h1 {
 }
 p {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-
+  
 }
 h5 {
   font-weight: lighter;
   font-size: small;
-  margin-top: -30px;
+  margin-top: -1rem;
 }
 .container {
   display: block;
@@ -47,3 +46,23 @@ h5 {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+@media screen and (min-width: 762px) {
+  #icons {
+    width: 50%
+  }
+  #prayerNames {
+    font-size: 3rem;
+  }
+  
+}
+
+@media screen and (max-width: 762px) {
+  #icons {
+    width: 100%
+  }
+  #prayerNames {
+    font-size: 1.5rem;
+  }
+}
+

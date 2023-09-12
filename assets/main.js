@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
             displayPrayerTimes(json);
         })
         .catch(error => {
+            loadingSpinner.style.display = "none";
+            createAndStyleElement(h1, "Datan kan inte hämtas just nu.")
             console.error(error.message);
         });
 });
@@ -27,6 +29,7 @@ function fetchPrayerData(url) {
             displayPrayerTimes(json);
         })
         .catch(error => {
+            loadingSpinner.style.display = "none";
             createAndStyleElement(h1, "Datan kan inte hämtas just nu.")
             console.error(error.message);
         });
@@ -73,12 +76,19 @@ function displayPrayerTimes(json) {
         if (!active) {
             prayer_id.style.backgroundColor = "#A7C7E7";
             prayer_id.style.color = "#212124";
-            prayer_id.style.fontWeight = "bold";
+            prayer_id.style.fontWeight = "lighter";
         }
 
         const img = document.createElement("img");
         img.src = `./assets/img/${image_source[i]}`;
-        img.style.width = "100%";
+
+
+
+ 
+        // img.style.width = "50%";    
+        img.setAttribute('id', 'icons');
+        
+        
         mydiv.style.width = "20%";
         mydiv.style.marginLeft = "1%";
         mydiv.style.paddingTop = "2%";
@@ -87,7 +97,10 @@ function displayPrayerTimes(json) {
         prayer_id.appendChild(mydiv);
 
         const temp = createAndStyleElement("p", prayer === "fajr_tmr" ? "Fajr" : prayer);
-        temp.style.fontSize = "1.5rem";
+        
+
+        temp.setAttribute('id', 'prayerNames');
+        
         const mydiv2 = document.createElement("div");
         mydiv2.style.width = "50%";
         mydiv2.appendChild(temp);
@@ -107,7 +120,7 @@ function displayPrayerTimes(json) {
         }
         
         const mydiv3 = document.createElement("div");
-        temp2.style.fontSize = "1.5rem";
+        temp2.setAttribute('id', 'prayerNames');
         mydiv3.appendChild(temp2);
         mydiv3.appendChild(time_until);
         prayer_id.appendChild(mydiv3);
