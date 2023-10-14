@@ -35,11 +35,11 @@ h5 {
   border: 9px solid #f3f3f3;
   border-top: 9px solid #007bff; /* Loading spinner color */
   border-radius: 50%;
-  width: 10rem;
-  height: 10rem;
-  animation: spin 2s linear infinite;
+  width: 5rem;
+  height: 5rem;
+  animation: spin 0.9s linear infinite;
   margin: 20px auto;
-  margin-top: 10%;
+  margin-top: 30%;
 }
 
 @keyframes spin {
