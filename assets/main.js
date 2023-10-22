@@ -1,40 +1,60 @@
-
-
-// Fetch data from API, and use loading animation while data is being fetched.
 document.addEventListener("DOMContentLoaded", () => {
     const url = "https://dailyprayer.abdulrcs.repl.co/api/stockholm";
     const loadingSpinner = document.getElementById("loadingSpinner");
 
-    fetch(url)
-        .then(response => response.json())
-        .then(json => {
-            // Hide the loading spinner when data is loaded
-            loadingSpinner.style.display = "none";
-
-            displayPrayerTimes(json);
+    // Check if data is available in cache
+    checkCache(url)
+        .then(data => {
+            if (data) {
+                // Use cached data
+                loadingSpinner.style.display = "none";
+                displayPrayerTimes(data);
+            } else {
+                // Fetch data from the API and store it in the cache
+                fetchPrayerData(url, loadingSpinner);
+            }
         })
         .catch(error => {
             loadingSpinner.style.display = "none";
-            createAndStyleElement(h1, "Datan kan inte hämtas just nu.")
+            createAndStyleElement(h1, "Datan kan inte hämtas just nu.");
             console.error(error.message);
         });
 });
 
+// Get the data from the cache
+function checkCache(url) {
+    return caches.open('api-cache').then(cache => {
+        return cache.match(url).then(response => {
+            return response ? response.json() : null;
+        });
+    });
+}
 
-// Get the data from the API
-function fetchPrayerData(url) {
+// Fetch data from the API and store it in the cache
+function fetchPrayerData(url, loadingSpinner) {
     fetch(url)
         .then(response => response.json())
         .then(json => {
+            loadingSpinner.style.display = "none";
             displayPrayerTimes(json);
+
+            // Update the cache with new data
+            updateCache(url, json);
         })
         .catch(error => {
             loadingSpinner.style.display = "none";
-            createAndStyleElement(h1, "Datan kan inte hämtas just nu.")
+            createAndStyleElement(h1, "Datan kan inte hämtas just nu.");
             console.error(error.message);
         });
 }
 
+// Update the cache with new data
+function updateCache(url, data) {
+    caches.open('api-cache').then(cache => {
+        const response = new Response(JSON.stringify(data));
+        cache.put(url, response);
+    });
+}
 // Append the prayer times for today that have yet to be passed
 function displayPrayerTimes(json) {
     const dict = {};
@@ -137,3 +157,4 @@ function createAndStyleElement(elementType, textContent) {
     element.style.textAlign = "center";
     return element;
 }
+
