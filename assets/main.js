@@ -2,35 +2,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = "https://dailyprayer.abdulrcs.repl.co/api/stockholm";
     const loadingSpinner = document.getElementById("loadingSpinner");
 
-    // Check if data is available in cache
-    checkCache(url)
-        .then(data => {
-            if (data) {
-                // Use cached data
-                loadingSpinner.style.display = "none";
-                displayPrayerTimes(data);
-            } else {
-                // Fetch data from the API and store it in the cache
-                fetchPrayerData(url, loadingSpinner);
-            }
-        })
-        .catch(error => {
-            loadingSpinner.style.display = "none";
-            createAndStyleElement(h1, "Datan kan inte hämtas just nu.");
-            console.error(error.message);
-        });
+    const cachedData = localStorage.getItem("cachedData");
+
+    if (cachedData) {
+        const jsonData = JSON.parse(cachedData);
+        loadingSpinner.style.display = "none";
+        displayPrayerTimes(jsonData);
+    } else {
+        fetchPrayerData(url, loadingSpinner);
+    }
 });
 
-// Get the data from the cache
-function checkCache(url) {
-    return caches.open('api-cache').then(cache => {
-        return cache.match(url).then(response => {
-            return response ? response.json() : null;
-        });
-    });
-}
-
-// Fetch data from the API and store it in the cache
+// Fetch data from the API and store it in localStorage
 function fetchPrayerData(url, loadingSpinner) {
     fetch(url)
         .then(response => response.json())
@@ -38,8 +21,8 @@ function fetchPrayerData(url, loadingSpinner) {
             loadingSpinner.style.display = "none";
             displayPrayerTimes(json);
 
-            // Update the cache with new data
-            updateCache(url, json);
+            // Store the fetched data in localStorage
+            localStorage.setItem("cachedData", JSON.stringify(json));
         })
         .catch(error => {
             loadingSpinner.style.display = "none";
@@ -47,6 +30,14 @@ function fetchPrayerData(url, loadingSpinner) {
             console.error(error.message);
         });
 }
+
+// Get the data from the cache
+function checkCache(url) {
+    return caches.open('api-cache')
+        .then(cache => cache.match(url))
+        .then(response => (response ? response.json() : null));
+}
+
 
 // Update the cache with new data
 function updateCache(url, data) {
