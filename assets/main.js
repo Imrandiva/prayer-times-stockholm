@@ -5,11 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const cachedData = localStorage.getItem("cachedData");
 
     const cachedDate = new Date(cachedData.date);
-    console.log(cachedDate);
 
     // Format the cached date in the same format as new Date().toLocaleDateString()
     const cachedDateFormatted = cachedDate.toLocaleDateString()
-    console.log(cachedDateFormatted);
 
     if (cachedData && cachedDateFormatted == new Date().toLocaleDateString()) {
         const jsonData = JSON.parse(cachedData);
@@ -33,7 +31,7 @@ function fetchPrayerData(url, loadingSpinner) {
         })
         .catch(error => {
             loadingSpinner.style.display = "none";
-            createAndStyleElement(h1, "Datan kan inte hämtas just nu.");
+            createAndStyleElement("h1", "Datan kan inte hämtas just nu.");
             console.error(error.message);
         });
 }
