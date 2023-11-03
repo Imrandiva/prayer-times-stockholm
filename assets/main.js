@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Format the cached date in the same format as new Date().toLocaleDateString()
     const cachedDateFormatted = cachedDate.toLocaleDateString()
 
-    if (cachedData && cachedDateFormatted == new Date().toLocaleDateString()) {
+    if (cachedData && cachedDateFormatted === new Date().toLocaleDateString()) {
         const jsonData = JSON.parse(cachedData);
         loadingSpinner.style.display = "none";
         displayPrayerTimes(jsonData);
