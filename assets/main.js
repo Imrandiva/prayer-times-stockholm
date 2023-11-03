@@ -4,7 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cachedData = localStorage.getItem("cachedData");
 
-    if (cachedData) {
+    const cachedDate = new Date(cachedData.date);
+    console.log(cachedDate);
+
+    // Format the cached date in the same format as new Date().toLocaleDateString()
+    const cachedDateFormatted = cachedDate.toLocaleDateString()
+    console.log(cachedDateFormatted);
+
+    if (cachedData && cachedDateFormatted == new Date().toLocaleDateString()) {
         const jsonData = JSON.parse(cachedData);
         loadingSpinner.style.display = "none";
         displayPrayerTimes(jsonData);
