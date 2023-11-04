@@ -3,8 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadingSpinner = document.getElementById("loadingSpinner");
 
     const cachedData = localStorage.getItem("cachedData");
+    var cachedData2 = JSON.parse(cachedData);
 
-    const cachedDate = new Date(cachedData.date);
+    const cachedDate = new Date(cachedData2["date"]);
+
 
     // Format the cached date in the same format as new Date().toLocaleDateString()
     const cachedDateFormatted = cachedDate.toLocaleDateString()
