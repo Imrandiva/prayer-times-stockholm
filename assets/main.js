@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const url = "https://dailyprayer.abdulrcs.repl.co/api/stockholm";
+    const url = "https://prayer-times-api-gamma.vercel.app/api/stockholm";
     const loadingSpinner = document.getElementById("loadingSpinner");
 
     const cachedData = localStorage.getItem("cachedData");
