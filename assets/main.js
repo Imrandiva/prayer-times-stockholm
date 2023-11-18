@@ -29,12 +29,29 @@ function fetchPrayerData(url, loadingSpinner) {
             displayPrayerTimes(json);
 
             // Store the fetched data in localStorage
+
+            let today = new Date();
+            let day = today.getDate();
+            let month = today.toLocaleString('default', { month: 'short' });
+            month = month.charAt(0).toUpperCase() + month.slice(1);
+            let weekday = today.toLocaleDateString('en-US', { weekday: 'short' });
+            
+            // Format the date as "Weekday Day Month"
+            let todayFormatted = `${weekday} ${day} ${month}`.replace('.', '');
+            
+              // Extract data for today's date
+        
+        
+            let todayData = { [todayFormatted]: json[todayFormatted] };
+            json = todayData
+        
+
             localStorage.setItem("cachedData", JSON.stringify(json));
         })
         .catch(error => {
             loadingSpinner.style.display = "none";
             createAndStyleElement("h1", "Datan kan inte hämtas just nu.");
-            console.error(error.message);
+            // console.error(error.message);
         });
 }
 
@@ -59,23 +76,52 @@ function displayPrayerTimes(json) {
     const prayerTimesDiv = document.getElementById("prayerTimes");
     const prayerName = document.getElementById("prayers");
     const todaysDate = document.getElementById("todaysDate");
+    
+    // const dateHeading = createAndStyleElement("p", `Dagens datum: ${json.date}`);
+    // todaysDate.appendChild(dateHeading);
 
-    const dateHeading = createAndStyleElement("p", `Dagens datum: ${json.date}`);
-    todaysDate.appendChild(dateHeading);
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.toLocaleString('default', { month: 'short' });
+    month = month.charAt(0).toUpperCase() + month.slice(1);
+    let weekday = today.toLocaleDateString('en-US', { weekday: 'short' });
+    
+    // Format the date as "Weekday Day Month"
+    let todayFormatted = `${weekday} ${day} ${month}`.replace('.', '');
+    
+      // Extract data for today's date
+    let tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
 
-    for (const prayer in json.today) {
-        dict[prayer] = json.today[prayer];
-    }
-    dict["fajr_tmr"] = json.tomorrow["Fajr"];
+    day = tomorrow.getDate();
+    month = tomorrow.toLocaleString('default', { month: 'short' });
+    month = month.charAt(0).toUpperCase() + month.slice(1);
+    weekday = tomorrow.toLocaleDateString('en-US', { weekday: 'short' });
+    
+    // Format the date as "Weekday Day Month"
+    let tomorrowFormatted = `${weekday} ${day} ${month}`.replace('.', '');
+    
 
-    const prayerNameList = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha'a", "fajr_tmr"];
+    // let todayData = { [todayFormatted]: json[todayFormatted] };
+    // json = todayData
+
+    
+    // for (const prayer in json) {
+    //     dict[prayer] = json[prayer];
+    // }
+
+    json[todayFormatted]["Fajr_tmr"] = json[tomorrowFormatted]["Fajr"] 
+
+    
+    const prayerNameList = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha'a", "Fajr_tmr"];
     const pray_id = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha", "fajr_tmr"];
     const image_source = ["sunrise.png", "sun.png", "midday.png", "midday.png", "sunset.png", "prayer.png", "sunrise.png"];
 
     let i = 0;
     let active = false;
+
     for (const prayer of prayerNameList) {
-        const prayer_time = dict[prayer];
+        const prayer_time = json[todayFormatted][prayer];
         const timeString = prayer_time;
         const today = new Date();
         const year = today.getFullYear();
@@ -114,7 +160,7 @@ function displayPrayerTimes(json) {
         mydiv.appendChild(img);
         prayer_id.appendChild(mydiv);
 
-        const temp = createAndStyleElement("p", prayer === "fajr_tmr" ? "Fajr" : prayer);
+        const temp = createAndStyleElement("p", prayer === "Fajr_tmr" ? "Fajr" : prayer);
         
 
         temp.setAttribute('id', 'prayerNames');
