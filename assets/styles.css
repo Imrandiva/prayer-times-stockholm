@@ -19,16 +19,88 @@ h5 {
 
 }
 
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  position: relative;
+}
+
+th, td {
+  text-align: center;
+  padding-left: 0.1rem; /* Increased padding for better readability */
+  padding-right: 0.1rem; /* Increased padding for better readability */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1rem; /* Increased font size */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
+
+}
+
+th {
+  background-color: #3D426B;
+  color: #FFFFFF;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+  background-color: #d9d8db;
+}
+
+/* Sticky header */
+th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #3D426B;
+  color: #FFFFFF;
+}
 #fajr, #sunrise, #dhuhr, #asr, #maghrib, #isha, #fajr_tmr {
   width: 90%;
   background-color: #3D426B;
   color: #FFFFFF;
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding: 0rem;
   margin: 20px;
   display: flex;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow:5px 10px 8px #212124
+  box-shadow:5px 10px 8px #212124;
+  position: relative;
+  left: 45%;
+  transform: translateX(-50%);
+}
+
+.button-link {
+  display: inline-block;
+  padding: 10px 20px; /* Adjust padding as needed */
+  text-decoration: none;
+  background-color: #3D426B; /* Button color */
+  color: lightgray; /* Text color */
+  border-radius: 50rem;
+  position: absolute;
+  left: 45%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  text-align: center;
+  padding: 1rem;
+  /* round the corners */
+  margin: 20px;
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
+
+}
+
+.button-link:hover {
+  background-color: #0056b3; /* Change color on hover */
+  color: #ffffff; /* Change text color on hover */
 }
 
 .loader {
@@ -64,5 +136,15 @@ h5 {
   #prayerNames {
     font-size: 1.5rem;
   }
+
+  table,
+  th,
+  td {
+    font-size: 1rem; /* Adjust the font size for smaller screens */
+  }
 }
+
+
+ 
+
 

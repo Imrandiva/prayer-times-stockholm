@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Format the cached date in the same format as new Date().toLocaleDateString()
     const cachedDateFormatted = cachedDate.toLocaleDateString()
 
-    if (cachedData && cachedDateFormatted === new Date().toLocaleDateString()) {
+    if (cachedData) {
         const jsonData = JSON.parse(cachedData);
         loadingSpinner.style.display = "none";
         displayPrayerTimes(jsonData);
@@ -27,25 +27,6 @@ function fetchPrayerData(url, loadingSpinner) {
         .then(json => {
             loadingSpinner.style.display = "none";
             displayPrayerTimes(json);
-
-            // Store the fetched data in localStorage
-
-            let today = new Date();
-            let day = today.getDate();
-            let month = today.toLocaleString('default', { month: 'short' });
-            month = month.charAt(0).toUpperCase() + month.slice(1);
-            let weekday = today.toLocaleDateString('en-US', { weekday: 'short' });
-            
-            // Format the date as "Weekday Day Month"
-            let todayFormatted = `${weekday} ${day} ${month}`.replace('.', '');
-            
-              // Extract data for today's date
-        
-        
-            let todayData = { [todayFormatted]: json[todayFormatted] };
-            json = todayData
-        
-
             localStorage.setItem("cachedData", JSON.stringify(json));
         })
         .catch(error => {
@@ -70,6 +51,10 @@ function updateCache(url, data) {
         cache.put(url, response);
     });
 }
+
+
+
+
 // Append the prayer times for today that have yet to be passed
 function displayPrayerTimes(json) {
     const dict = {};
@@ -77,17 +62,19 @@ function displayPrayerTimes(json) {
     const prayerName = document.getElementById("prayers");
     const todaysDate = document.getElementById("todaysDate");
     
-    // const dateHeading = createAndStyleElement("p", `Dagens datum: ${json.date}`);
-    // todaysDate.appendChild(dateHeading);
 
     let today = new Date();
     let day = today.getDate();
     let month = today.toLocaleString('default', { month: 'short' });
     month = month.charAt(0).toUpperCase() + month.slice(1);
     let weekday = today.toLocaleDateString('en-US', { weekday: 'short' });
-    
+    let display_weekday = today.toLocaleDateString('sv', { weekday: 'long'});
     // Format the date as "Weekday Day Month"
+    let display_todayFormatted = `${display_weekday} ${day} ${month}`.replace('.', '');
     let todayFormatted = `${weekday} ${day} ${month}`.replace('.', '');
+
+    const dateHeading = createAndStyleElement("p", `Dagens datum: ${display_todayFormatted}`);
+    todaysDate.appendChild(dateHeading);
     
       // Extract data for today's date
     let tomorrow = new Date(today);
@@ -119,8 +106,9 @@ function displayPrayerTimes(json) {
 
     let i = 0;
     let active = false;
-
+    prev_prayer = null
     for (const prayer of prayerNameList) {
+
         const prayer_time = json[todayFormatted][prayer];
         const timeString = prayer_time;
         const today = new Date();
@@ -129,69 +117,202 @@ function displayPrayerTimes(json) {
         const day = today.getDate().toString().padStart(2, '0');
         const parsedTime = new Date(`${year}-${month}-${day}T${timeString}`);
         
+ 
         if (i !== 6 && parsedTime < today) {
             i += 1;
+            prev_prayer = prayer;
+
             continue;
         }
 
         const prayer_id = document.getElementById(pray_id[i]);
-        const mydiv = document.createElement("div");
 
         if (!active) {
-            prayer_id.style.backgroundColor = "#A7C7E7";
-            prayer_id.style.color = "#212124";
-            prayer_id.style.fontWeight = "bold";
-        }
-
-        const img = document.createElement("img");
-        img.src = `./assets/img/${image_source[i]}`;
-
-
-
- 
-        // img.style.width = "50%";    
-        img.setAttribute('id', 'icons');
-        
-        
-        mydiv.style.width = "20%";
-        mydiv.style.marginLeft = "1%";
-        mydiv.style.paddingTop = "2%";
-        mydiv.style.marginRight = "5%";
-        mydiv.appendChild(img);
-        prayer_id.appendChild(mydiv);
-
-        const temp = createAndStyleElement("p", prayer === "Fajr_tmr" ? "Fajr" : prayer);
-        
-
-        temp.setAttribute('id', 'prayerNames');
-        
-        const mydiv2 = document.createElement("div");
-        mydiv2.style.width = "50%";
-        mydiv2.appendChild(temp);
-        prayer_id.appendChild(mydiv2);
-
-        const temp2 = createAndStyleElement("p", prayer_time);
-        const time_until = document.createElement("h5");
-
-        if (!active && i < 6) {
-            const time_until_time = Math.round((parsedTime.getTime() - today.getTime()) / 1000 / 60);
-            const hours = Math.floor(time_until_time / 60);
-            const minutes = time_until_time % 60;
-            temp2.textContent = prayer_time;
-            
-            time_until.textContent = `Börjar om ${hours === 1 ? `${hours} timme och` : hours === 0 ? '' : `${hours} timmar och`} ${minutes} min`;
+            if (i != 0) {
+                let prev_prayer_id = document.getElementById(pray_id[i-1]);
+                console.log(prev_prayer_id);
+                livePrayerCard(i-1, prev_prayer_id,image_source, prev_prayer, json[todayFormatted][prev_prayer], today, parsedTime);
+            }
+            activePrayerCard(i, prayer_id,image_source, prayer, prayer_time, today, parsedTime);
             active = true;
         }
-        
-        const mydiv3 = document.createElement("div");
-        temp2.setAttribute('id', 'prayerNames');
-        mydiv3.appendChild(temp2);
-        mydiv3.appendChild(time_until);
-        prayer_id.appendChild(mydiv3);
+        else {
+            normalPrayerCard(i, prayer_id,image_source, prayer, prayer_time, today, parsedTime);
+        }
+        prev_prayer = prayer;
 
         i += 1;
     }
 }
+
+function normalPrayerCard(i, prayer_id, image_source, prayer, prayer_time, today, parsedTime) {
+    const mydiv = document.createElement("div");
+
+  
+
+    const img = document.createElement("img");
+    img.src = `./assets/img/${image_source[i]}`;
+
+
+
+
+    // img.style.width = "50%";    
+    img.setAttribute('id', 'icons');
+    
+    
+    mydiv.style.width = "20%";
+    mydiv.style.marginLeft = "1%";
+    mydiv.style.paddingTop = "2%";
+    mydiv.style.marginRight = "5%";
+    mydiv.appendChild(img);
+    prayer_id.appendChild(mydiv);
+
+    const temp = createAndStyleElement("p", prayer === "Fajr_tmr" ? "Fajr" : prayer);
+    
+
+    temp.setAttribute('id', 'prayerNames');
+    
+    const mydiv2 = document.createElement("div");
+    mydiv2.style.width = "50%";
+    mydiv2.appendChild(temp);
+    prayer_id.appendChild(mydiv2);
+
+    const temp2 = createAndStyleElement("p", prayer_time);
+    const time_until = document.createElement("h5");
+    let time_until_time = null
+    if (prayer === "Fajr_tmr") {
+        time_until_time = Math.round(( today.getTime() -parsedTime.getTime()) / 1000 / 60);
+    }
+    else{
+        time_until_time = Math.round(( parsedTime.getTime() -today.getTime()) / 1000 / 60);
+    }
+    
+    const mydiv3 = document.createElement("div");
+    temp2.setAttribute('id', 'prayerNames');
+    mydiv3.appendChild(temp2);
+    mydiv3.appendChild(time_until);
+    prayer_id.appendChild(mydiv3);
+
+}
+function livePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today, parsedTime) {
+    const mydiv = document.createElement("div");
+    prayer_id.style.fontWeight = "bold";
+
+
+  
+
+    const img = document.createElement("img");
+    img.src = `./assets/img/live.gif`;
+    // change img color to red
+    img.style.filter = "invert(1)";
+
+
+
+
+
+
+    // img.style.width = "50%";    
+    img.setAttribute('id', 'icons');
+    
+    
+    mydiv.style.width = "20%";
+    mydiv.style.marginLeft = "1%";
+    mydiv.style.paddingTop = "2%";
+    mydiv.style.marginRight = "5%";
+    mydiv.appendChild(img);
+    prayer_id.appendChild(mydiv);
+
+    const temp = createAndStyleElement("p", prayer === "Fajr_tmr" ? "Fajr" : prayer);
+    
+
+    temp.setAttribute('id', 'prayerNames');
+    
+    const mydiv2 = document.createElement("div");
+    mydiv2.style.width = "50%";
+    mydiv2.appendChild(temp);
+    prayer_id.appendChild(mydiv2);
+
+    const temp2 = createAndStyleElement("p", prayer_time)
+  
+
+
+
+    // img.style.width = "50%";    
+    img.setAttribute('id', 'icons');
+
+    
+    const mydiv3 = document.createElement("div");
+    temp2.setAttribute('id', 'prayerNames');
+    mydiv3.appendChild(temp2);
+    prayer_id.appendChild(mydiv3);
+
+}
+
+function activePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today, parsedTime) {
+
+    const mydiv = document.createElement("div");
+
+
+    prayer_id.style.backgroundColor = "#A7C7E7";
+    prayer_id.style.color = "#212124";
+
+
+
+
+    const img = document.createElement("img");
+    img.src = `./assets/img/${image_source[i]}`;
+
+
+
+
+    // img.style.width = "50%";    
+    img.setAttribute('id', 'icons');
+    
+    
+    mydiv.style.width = "20%";
+    mydiv.style.marginLeft = "1%";
+    mydiv.style.paddingTop = "2%";
+    mydiv.style.marginRight = "5%";
+    mydiv.appendChild(img);
+    prayer_id.appendChild(mydiv);
+
+    const temp = createAndStyleElement("p", prayer === "Fajr_tmr" ? "Fajr" : prayer);
+    
+
+    temp.setAttribute('id', 'prayerNames');
+    
+    const mydiv2 = document.createElement("div");
+    mydiv2.style.width = "50%";
+    mydiv2.appendChild(temp);
+    prayer_id.appendChild(mydiv2);
+
+    const temp2 = createAndStyleElement("p", prayer_time);
+    const time_until = document.createElement("h5");
+    let time_until_time = null
+    if (prayer === "Fajr_tmr") {
+        time_until_time = Math.round(( today.getTime() -parsedTime.getTime()) / 1000 / 60);
+    }
+    else{
+        time_until_time = Math.round(( parsedTime.getTime() -today.getTime()) / 1000 / 60);
+    }
+
+        
+    const hours = Math.floor(time_until_time / 60);
+    const minutes = time_until_time % 60;
+    temp2.textContent = prayer_time;
+    
+    time_until.textContent = `Börjar om ${hours === 1 ? `${hours} timme och` : hours === 0 ? '' : `${hours} timmar och`} ${minutes} min`;
+    active = true;
+
+    
+    const mydiv3 = document.createElement("div");
+    temp2.setAttribute('id', 'prayerNames');
+    mydiv3.appendChild(temp2);
+    mydiv3.appendChild(time_until);
+    prayer_id.appendChild(mydiv3);
+
+}
+
 
 // Crete new element 
 function createAndStyleElement(elementType, textContent) {
