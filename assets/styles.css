@@ -73,7 +73,7 @@ th {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-shadow:5px 10px 8px #212124;
   position: relative;
-  left: 45%;
+  left: 50%;
   transform: translateX(-50%);
 }
 
@@ -85,7 +85,7 @@ th {
   color: lightgray; /* Text color */
   border-radius: 50rem;
   position: absolute;
-  left: 45%;
+  left: 50%;
   transform: translateX(-50%);
   font-size: 1rem;
   text-align: center;
