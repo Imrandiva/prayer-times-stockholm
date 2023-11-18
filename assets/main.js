@@ -3,14 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadingSpinner = document.getElementById("loadingSpinner");
 
     const cachedData = localStorage.getItem("cachedData");
-    var cachedData2 = JSON.parse(cachedData);
-
-    const cachedDate = new Date(cachedData2["date"]);
 
 
-    // Format the cached date in the same format as new Date().toLocaleDateString()
-    const cachedDateFormatted = cachedDate.toLocaleDateString()
-
+    // Fixa så vi updaterar cahce varje månad
     if (cachedData) {
         const jsonData = JSON.parse(cachedData);
         loadingSpinner.style.display = "none";
