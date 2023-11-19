@@ -210,20 +210,28 @@ function livePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today, 
     img.setAttribute('id', 'icons');
     
     
-    mydiv.style.width = "20%";
-    mydiv.style.marginLeft = "1%";
-    mydiv.style.paddingTop = "2%";
-    mydiv.style.marginRight = "5%";
+    mydiv.style.cssText = `
+    width: 20%;
+    margin-left: 1%;
+    padding-top: 2%;
+    margin-right: 5%;
+  `;
+  
     mydiv.appendChild(img);
+    
     prayer_id.appendChild(mydiv);
+    
     const icon = document.createElement("img");
-    icon.src = "./assets/img/live.gif"; // Replace with the actual path to your icon
-    icon.style.filter = "invert(1)";
-    icon.style.position = "absolute"; // Set position to absolute
-    icon.style.top = "0"; // Align to the top
-    icon.style.right = "0"; // Align to the right
-    icon.style.width = "2rem"; // Adjust the width as needed
-    icon.style.height = "2rem"; // Adjust the height as needed
+    icon.src = "./assets/img/live.gif";
+    icon.style.cssText = `
+        filter: invert(1);
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2rem;
+        height: 2rem;
+    `;
+    
     mydiv.appendChild(icon);
 
 
@@ -296,13 +304,24 @@ function activePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today
     const temp2 = createAndStyleElement("p", prayer_time);
     let time_until_time = null
     if (prayer === "Fajr_tmr") {
-        time_until_time = Math.round(( today.getTime() -parsedTime.getTime()) / 1000 / 60);
+        // Get current date and time
+        const now = new Date();
+
+        // Calculate the time difference in minutes
+        time_until_time = Math.round((parsedTime - now) / (60 * 1000)); 
+        
+
+        // If the target time is earlier than the current time, add 24 hours
+        if (time_until_time < 0) {
+            time_until_time += 24 * 60; // 24 hours in minutes
+        }
+        
     }
-    else{
+    else {
         time_until_time = Math.round(( parsedTime.getTime() -today.getTime()) / 1000 / 60);
     }
 
-        
+    
     const hours = Math.floor(time_until_time / 60);
     const minutes = time_until_time % 60;
     temp2.textContent = prayer_time;
@@ -312,21 +331,25 @@ function activePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today
 
 
     const icon = document.createElement("p");
-    icon.textContent = `Om ${hours === 1 ? `${hours} timme och` : hours === 0 ? '' : `${hours} timmar och`} ${minutes} min`;
-    icon.style.fontSize = "0.5rem"
-    icon.style.fontFamily = "sans-serif";
-    icon.style.position = "absolute"; // Set position to absolute
-    icon.style.top = "0"; // Align to the top
-    icon.style.right = "0"; // Align to the right
-    icon.style.marginRight = "1%";
-    icon.style.marginTop = "1%";
-    icon.style.padding = "2px 6px"; // Padding for a button-like appearance
-    icon.style.backgroundColor = "#007BFF"; // Background color
-    icon.style.color = "#FFFFFF"; // Text color
-    icon.style.border = "none"; // No border
-    icon.style.borderRadius = "5px"; // Rounded corners
-    icon.style.cursor = "pointer"; // Cursor style
-    mydiv.appendChild(icon);
+    const timeString = hours === 1 ? `${hours} timme och` : hours > 1 ? `${hours} timmar och` : '';
+    icon.textContent = `Om ${timeString} ${minutes} min`;
+    icon.style.cssText = `
+        font-size: 0.5rem;
+        font-family: sans-serif;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-right: 1%;
+        margin-top: 1%;
+        padding: 2px 6px;
+        background-color: #007BFF;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    `;
+
+mydiv.appendChild(icon);
     
     const mydiv3 = document.createElement("div");
     temp2.setAttribute('id', 'prayerNames');
