@@ -73,7 +73,7 @@ th {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-shadow:5px 10px 8px #212124;
   position: relative;
-  left: 50%;
+  left: 45%;
   transform: translateX(-50%);
 }
 
@@ -85,8 +85,7 @@ th {
   color: lightgray; /* Text color */
   border-radius: 50rem;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 38%;
   font-size: 1rem;
   text-align: center;
   padding: 1rem;
@@ -99,7 +98,7 @@ th {
 }
 
 .button-link:hover {
-  background-color: #0056b3; /* Change color on hover */
+  transform: scale(1.1);
   color: #ffffff; /* Change text color on hover */
 }
 
@@ -135,6 +134,14 @@ th {
   }
   #prayerNames {
     font-size: 1.5rem;
+  }
+  .button-link {
+    padding: 10px 15px; /* Adjust padding as needed */
+    font-size: 1rem;
+    border-radius: 50rem;
+    left: 15%;
+    
+  
   }
 
   table,

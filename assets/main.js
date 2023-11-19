@@ -162,6 +162,7 @@ function normalPrayerCard(i, prayer_id, image_source, prayer, prayer_time, today
     mydiv.appendChild(img);
     prayer_id.appendChild(mydiv);
 
+  
     const temp = createAndStyleElement("p", prayer === "Fajr_tmr" ? "Fajr" : prayer);
     
 
@@ -197,9 +198,8 @@ function livePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today, 
   
 
     const img = document.createElement("img");
-    img.src = `./assets/img/live.gif`;
+    img.src = `./assets/img/${image_source[i]}`;
     // change img color to red
-    img.style.filter = "invert(1)";
 
 
 
@@ -216,6 +216,16 @@ function livePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today, 
     mydiv.style.marginRight = "5%";
     mydiv.appendChild(img);
     prayer_id.appendChild(mydiv);
+    const icon = document.createElement("img");
+    icon.src = "./assets/img/live.gif"; // Replace with the actual path to your icon
+    icon.style.filter = "invert(1)";
+    icon.style.position = "absolute"; // Set position to absolute
+    icon.style.top = "0"; // Align to the top
+    icon.style.right = "0"; // Align to the right
+    icon.style.width = "2rem"; // Adjust the width as needed
+    icon.style.height = "2rem"; // Adjust the height as needed
+    mydiv.appendChild(icon);
+
 
     const temp = createAndStyleElement("p", prayer === "Fajr_tmr" ? "Fajr" : prayer);
     
@@ -254,6 +264,7 @@ function activePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today
 
 
 
+
     const img = document.createElement("img");
     img.src = `./assets/img/${image_source[i]}`;
 
@@ -271,6 +282,7 @@ function activePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today
     mydiv.appendChild(img);
     prayer_id.appendChild(mydiv);
 
+   
     const temp = createAndStyleElement("p", prayer === "Fajr_tmr" ? "Fajr" : prayer);
     
 
@@ -282,7 +294,6 @@ function activePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today
     prayer_id.appendChild(mydiv2);
 
     const temp2 = createAndStyleElement("p", prayer_time);
-    const time_until = document.createElement("h5");
     let time_until_time = null
     if (prayer === "Fajr_tmr") {
         time_until_time = Math.round(( today.getTime() -parsedTime.getTime()) / 1000 / 60);
@@ -296,14 +307,31 @@ function activePrayerCard(i, prayer_id, image_source, prayer, prayer_time, today
     const minutes = time_until_time % 60;
     temp2.textContent = prayer_time;
     
-    time_until.textContent = `Börjar om ${hours === 1 ? `${hours} timme och` : hours === 0 ? '' : `${hours} timmar och`} ${minutes} min`;
+
     active = true;
 
+
+    const icon = document.createElement("p");
+    icon.textContent = `Om ${hours === 1 ? `${hours} timme och` : hours === 0 ? '' : `${hours} timmar och`} ${minutes} min`;
+    icon.style.fontSize = "0.5rem"
+    icon.style.fontFamily = "sans-serif";
+    icon.style.position = "absolute"; // Set position to absolute
+    icon.style.top = "0"; // Align to the top
+    icon.style.right = "0"; // Align to the right
+    icon.style.marginRight = "1%";
+    icon.style.marginTop = "1%";
+    icon.style.padding = "2px 6px"; // Padding for a button-like appearance
+    icon.style.backgroundColor = "#007BFF"; // Background color
+    icon.style.color = "#FFFFFF"; // Text color
+    icon.style.border = "none"; // No border
+    icon.style.borderRadius = "5px"; // Rounded corners
+    icon.style.cursor = "pointer"; // Cursor style
+    mydiv.appendChild(icon);
     
     const mydiv3 = document.createElement("div");
     temp2.setAttribute('id', 'prayerNames');
     mydiv3.appendChild(temp2);
-    mydiv3.appendChild(time_until);
+    // mydiv3.appendChild(time_until);
     prayer_id.appendChild(mydiv3);
 
 }
