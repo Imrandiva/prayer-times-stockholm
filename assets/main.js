@@ -5,9 +5,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const cachedData = localStorage.getItem("cachedData");
 
 
+    // Get todays month
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.toLocaleString('default', { month: 'short' });
+    month = month.charAt(0).toUpperCase() + month.slice(1);
+    let weekday = today.toLocaleDateString('en-US', { weekday: 'short' });
+
+    // Format the date as "Weekday Day Month"
+    let todayFormatted = `${weekday} ${day} ${month}`.replace('.', '');
+    //&& cachedData. month === month
+
     // Fixa så vi updaterar cahce varje månad
-    if (cachedData) {
+    if (cachedData ) {
         const jsonData = JSON.parse(cachedData);
+
+        if (jsonData[todayFormatted] === undefined) {
+            fetchPrayerData(url, loadingSpinner);
+            return
+        }
+
         loadingSpinner.style.display = "none";
         displayPrayerTimes(jsonData);
     } else {
@@ -70,6 +87,8 @@ function displayPrayerTimes(json) {
 
     const dateHeading = createAndStyleElement("p", `Dagens datum: ${display_todayFormatted}`);
     todaysDate.appendChild(dateHeading);
+
+
     
       // Extract data for today's date
     let tomorrow = new Date(today);

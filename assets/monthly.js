@@ -7,12 +7,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cachedDate = new Date(cachedData2["date"]);
 
+     // Get todays month
+     let today = new Date();
+     let day = today.getDate();
+     let month = today.toLocaleString('default', { month: 'short' });
+     month = month.charAt(0).toUpperCase() + month.slice(1);
+     let weekday = today.toLocaleDateString('en-US', { weekday: 'short' });
+ 
+     // Format the date as "Weekday Day Month"
+     let todayFormatted = `${weekday} ${day} ${month}`.replace('.', '');
+     //&& cachedData. month === month
 
     // Format the cached date in the same format as new Date().toLocaleDateString()
     const cachedDateFormatted = cachedDate.toLocaleDateString()
 
     if (cachedData) {
         const jsonData = JSON.parse(cachedData);
+
+
+        if (jsonData[todayFormatted] === undefined) {
+            fetchPrayerData(url, loadingSpinner);
+            return
+        }
+
+        
         loadingSpinner.style.display = "none";
         getMonthlyPrayerTimes(jsonData);
     } else {
