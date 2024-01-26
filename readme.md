@@ -6,10 +6,8 @@
 
 A simple website primarily for mobile devices to be used as an ad-free experience for viewing the relevant prayer times in Stockholm.
 
-The website fetches the data from the Daily Prayer Time API created by [Abdul Rahman](https://github.com/abdulrcs). 
-
-Link to the github-repo of the API:
-https://github.com/abdulrcs/Daily-Prayer-Time-API
+The website fetches the data from the prayer API created here:
+https://github.com/Imrandiva/prayer-times-api
 
 ## Features
 
