@@ -24,8 +24,12 @@ table {
   border-spacing: 0;
   width: 100%;
   border: 1px solid #ddd;
-  overflow: hidden;
   position: relative;
+
+    overflow: scroll;
+    white-space: nowrap;
+  
+  
 }
 
 th, td {
@@ -36,6 +40,7 @@ th, td {
   padding-bottom: 1rem;
   font-size: 1rem; /* Increased font size */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-width: 200px;
   
 
 }
@@ -43,6 +48,7 @@ th, td {
 th {
   background-color: #3D426B;
   color: #FFFFFF;
+
 }
 
 tr:nth-child(even) {
@@ -85,13 +91,11 @@ th {
   color: lightgray; /* Text color */
   border-radius: 50rem;
   position: absolute;
-  left: 38%;
+  left: 50%;
   font-size: 1rem;
   text-align: center;
   padding: 1rem;
-  /* round the corners */
-  margin: 20px;
-  display: flex;
+  margin-top: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   
 
