@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (jsonData[todayFormatted] === undefined) {
+            window.location.refresh(true)
             fetchPrayerData(url, loadingSpinner);
             return
         }
