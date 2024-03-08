@@ -22,17 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const cachedDateFormatted = cachedDate.toLocaleDateString()
 
     if (cachedData) {
-        const jsonData = JSON.parse(cachedData);
+        // const jsonData = JSON.parse(cachedData);
 
 
-        if (jsonData[todayFormatted] === undefined) {
+        // if (jsonData[todayFormatted] === undefined) {
             fetchPrayerData(url, loadingSpinner);
             return
-        }
+        // }
 
         
-        loadingSpinner.style.display = "none";
-        getMonthlyPrayerTimes(jsonData);
+        // loadingSpinner.style.display = "none";
+        // getMonthlyPrayerTimes(jsonData);
     } else {
         fetchPrayerData(url, loadingSpinner);
     }
