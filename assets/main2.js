@@ -2,70 +2,95 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = "https://prayer-times-api-gamma.vercel.app/api/stockholm";
     const loadingSpinner = document.getElementById("loadingSpinner");
 
-    const cachedData = localStorage.getItem("cachedData");
-
-
-    // Get todays month
-    let today = new Date();
-    let day = today.getDate();
-    let month = today.toLocaleString('default', { month: 'short' });
-    month = month.charAt(0).toUpperCase() + month.slice(1);
-    let weekday = today.toLocaleDateString('en-US', { weekday: 'short' });
-
-    // Format the date as "Weekday Day Month"
-    let todayFormatted = `${weekday} ${day} ${month}`.replace('.', '');
-    //&& cachedData. month === month
-
-    // Fixa så vi updaterar cahce varje månad
-    if (cachedData ) {
-        const jsonData = JSON.parse(cachedData);
-
-        if (jsonData[todayFormatted] === undefined) {
+    retrieveData().then((cachedData) => {
+        if (cachedData) {
+            const jsonData = cachedData;
+            const todayFormatted = getFormattedDate(new Date());
+            if (jsonData[todayFormatted] === undefined) {
+                fetchPrayerData(url, loadingSpinner);
+            } else {
+                loadingSpinner.style.display = "none";
+                displayPrayerTimes(jsonData);
+            }
+        } else {
             fetchPrayerData(url, loadingSpinner);
-            return
         }
-
-        loadingSpinner.style.display = "none";
-        displayPrayerTimes(jsonData);
-    } else {
+    }).catch((error) => {
+        console.error(error);
         fetchPrayerData(url, loadingSpinner);
-    }
+    });
 });
 
-// Fetch data from the API and store it in localStorage
 function fetchPrayerData(url, loadingSpinner) {
     fetch(url)
         .then(response => response.json())
         .then(json => {
             loadingSpinner.style.display = "none";
             displayPrayerTimes(json);
-            localStorage.setItem("cachedData", JSON.stringify(json));
+            storeData(json);
         })
         .catch(error => {
             loadingSpinner.style.display = "none";
             createAndStyleElement("h1", "Datan kan inte hämtas just nu.");
-            // console.error(error.message);
+            console.error(error);
         });
 }
 
-// Get the data from the cache
-function checkCache(url) {
-    return caches.open('api-cache')
-        .then(cache => cache.match(url))
-        .then(response => (response ? response.json() : null));
-}
+const openDB = () => {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('myDatabase', 1);
 
+        request.onerror = (event) => {
+            reject('IndexedDB error: ' + event.target.errorCode);
+        };
 
-// Update the cache with new data
-function updateCache(url, data) {
-    caches.open('api-cache').then(cache => {
-        const response = new Response(JSON.stringify(data));
-        cache.put(url, response);
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            const store = db.createObjectStore('cachedData', { keyPath: 'id' });
+            store.createIndex('data', 'data', { unique: false });
+        };
     });
-}
+};
 
+const storeData = (data) => {
+    openDB().then((db) => {
+        const transaction = db.transaction(['cachedData'], 'readwrite');
+        const objectStore = transaction.objectStore('cachedData');
+        objectStore.clear(); // Clear existing data
+        objectStore.add({ id: 1, data: data });
+        transaction.oncomplete = () => {
+            console.log('Data stored in IndexedDB');
+        };
+        transaction.onerror = (event) => {
+            console.error('IndexedDB error: ' + event.target.errorCode);
+        };
+    }).catch((error) => {
+        console.error(error);
+    });
+};
 
-
+const retrieveData = () => {
+    return new Promise((resolve, reject) => {
+        openDB().then((db) => {
+            const transaction = db.transaction(['cachedData'], 'readonly');
+            const objectStore = transaction.objectStore('cachedData');
+            const request = objectStore.get(1);
+            request.onsuccess = (event) => {
+                resolve(event.target.result ? event.target.result.data : null);
+            };
+            request.onerror = (event) => {
+                reject('Error retrieving data from IndexedDB');
+            };
+        }).catch((error) => {
+            console.error(error);
+            reject('Error opening IndexedDB');
+        });
+    });
+};
 
 // Append the prayer times for today that have yet to be passed
 function displayPrayerTimes(json) {
@@ -388,5 +413,14 @@ function createAndStyleElement(elementType, textContent) {
     element.style.color = "#FFFFFF";
     element.style.textAlign = "center";
     return element;
+}
+
+
+
+function getFormattedDate(date) {
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' }).charAt(0).toUpperCase() + date.toLocaleString('default', { month: 'short' }).slice(1);
+    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+    return `${weekday} ${day} ${month}`.replace('.', '');
 }
 
