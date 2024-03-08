@@ -122,9 +122,7 @@ function displayPrayerTimes(json) {
     let active = false;
     prev_prayer = null
     for (const prayer of prayerNameList) {
-        if (prayer == "Fajr_tmr" && json[todayFormatted][prayer] === undefined){
-            json[todayFormatted][Fajr_tmr] = "Inte tillgänglig";
-        }
+
         const prayer_time = json[todayFormatted][prayer];
         const timeString = prayer_time;
         const today = new Date();
