@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = "https://prayer-times-api-gamma.vercel.app/api/stockholm";
     const loadingSpinner = document.getElementById("loadingSpinner");
 
-    // const cachedData = localStorage.getItem("cachedData");
+    const cachedData = localStorage.getItem("cachedData");
 
 
     // Get todays month
@@ -16,21 +16,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let todayFormatted = `${weekday} ${day} ${month}`.replace('.', '');
     //&& cachedData. month === month
 
-    // if (cachedData ) {
-    //     const jsonData = JSON.parse(cachedData);
+    // Fixa så vi updaterar cahce varje månad
+    if (cachedData ) {
+        const jsonData = JSON.parse(cachedData);
 
-    //     if (jsonData[todayFormatted] === undefined) {
-    //         fetchPrayerData(url, loadingSpinner);
-    //         return
-    //     }
+        if (jsonData[todayFormatted] === undefined) {
+            fetchPrayerData(url, loadingSpinner);
+            return
+        }
 
-    //     loadingSpinner.style.display = "none";
-    //     displayPrayerTimes(jsonData);
-    // } else {
-    //     fetchPrayerData(url, loadingSpinner);
-    // }
-
-    fetchPrayerData(url, loadingSpinner);
+        loadingSpinner.style.display = "none";
+        displayPrayerTimes(jsonData);
+    } else {
+        fetchPrayerData(url, loadingSpinner);
+    }
 });
 
 // Fetch data from the API and store it in localStorage
